@@ -1,12 +1,13 @@
 import { actions } from '../actions';
 
 const initialState = {
-	books: [],
+	books: null,
 	loading: false,
 	error: null,
+	cache: {},
 };
 
-const bookReducer = (state, action) => {
+const booksReducer = (state, action) => {
 	switch (action.type) {
 		case actions.books.DATA_FETCHING: {
 			return {
@@ -19,7 +20,11 @@ const bookReducer = (state, action) => {
 			return {
 				...state,
 				loading: false,
-				book: action.data,
+				books: action.data,
+				cache: {
+					...state.cache,
+					[action.page]: action.data,
+				},
 			};
 		}
 
@@ -37,4 +42,4 @@ const bookReducer = (state, action) => {
 	}
 };
 
-export { bookReducer, initialState };
+export { booksReducer, initialState };

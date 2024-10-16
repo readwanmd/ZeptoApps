@@ -12,18 +12,20 @@ export const useWishlist = () => {
 		localStorage.setItem('wishlist', JSON.stringify(wishlist));
 	}, [wishlist]);
 
-	// Add item to wishlist
-	const addToWishlist = (id) => {
-		if (!wishlist.includes(id)) {
-			setWishlist((prevWishlist) => [...prevWishlist, id]);
-			toast.success(`Book with id ${id} added to wishlist.`);
+	// Add entire book object to wishlist
+	const addToWishlist = (book) => {
+		const isAlreadyInWishlist = wishlist.some((item) => item.id === book.id);
+
+		if (!isAlreadyInWishlist) {
+			setWishlist((prevWishlist) => [...prevWishlist, book]);
+			toast.success(`"${book.title}" added to wishlist.`);
 		}
 	};
 
-	// Remove item from wishlist
+	// Remove item from wishlist by comparing book IDs
 	const removeFromWishlist = (id) => {
 		setWishlist((prevWishlist) =>
-			prevWishlist.filter((itemId) => itemId !== id)
+			prevWishlist.filter((book) => book.id !== id)
 		);
 		toast.error(`Book with id ${id} removed from wishlist.`);
 	};

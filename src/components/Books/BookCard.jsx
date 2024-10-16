@@ -3,7 +3,7 @@ import { Link } from 'react-router-dom';
 import Modal from '../common/Modal';
 
 const BookCard = ({
-	book,
+	book, // full book object passed here
 	isInWishlist,
 	addToWishlist,
 	removeFromWishlist,
@@ -77,7 +77,7 @@ const BookCard = ({
 							</button>
 						) : (
 							<button
-								onClick={() => addToWishlist(book?.id)}
+								onClick={() => addToWishlist(book)}
 								type="button"
 								className="inline-block rounded bg-blue-700 px-2 pb-2 pt-2.5 text-xs font-medium uppercase text-white transition duration-150 ease-in-out"
 								onMouseEnter={() => setTooltipVisible(true)}
