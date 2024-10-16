@@ -35,10 +35,7 @@ const NavBar = () => {
 	}, [isOpen]);
 
 	return (
-		<nav
-			ref={navRef}
-			className="sticky top-0 z-40 bg-white border-gray-200 dark:bg-graydark"
-		>
+		<nav ref={navRef} className="sticky top-0 z-40 bg-white shadow-lg">
 			<div className="max-w-screen-xl flex flex-wrap items-center justify-between mx-auto p-4">
 				<NavLink
 					to="/"

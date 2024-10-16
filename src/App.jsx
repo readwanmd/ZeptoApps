@@ -1,5 +1,6 @@
 import { BrowserRouter } from 'react-router-dom';
 import { ToastContainer } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 import AppRoutes from './routes/AppRoutes';
 
 const App = () => {
@@ -11,7 +12,7 @@ const App = () => {
 
 			<ToastContainer
 				position="top-right"
-				autoClose={1500}
+				autoClose={2000}
 				hideProgressBar={true}
 				newestOnTop={false}
 				closeOnClick

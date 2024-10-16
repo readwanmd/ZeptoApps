@@ -1,22 +1,25 @@
 import { useState } from 'react';
+import { Link } from 'react-router-dom';
 import Modal from '../common/Modal';
 
-const BookCard = ({ book, wishlist, addToWishlist, removeFromWishlist }) => {
-	const isInWishlist = wishlist.includes(book?.id);
+const BookCard = ({
+	book,
+	isInWishlist,
+	addToWishlist,
+	removeFromWishlist,
+}) => {
 	const [tooltipVisible, setTooltipVisible] = useState(false);
 	const [isModalOpen, setIsModalOpen] = useState(false);
 	const [selectedBookId, setSelectedBookId] = useState(null);
 
-	// Function to handle removing from wishlist with confirmation
 	const handleRemoveClick = (id) => {
-		setSelectedBookId(id); // Save the book id for removal
-		setIsModalOpen(true); // Open the modal
+		setSelectedBookId(id);
+		setIsModalOpen(true);
 	};
 
-	// Function to confirm the removal
 	const confirmRemove = () => {
 		removeFromWishlist(selectedBookId);
-		setIsModalOpen(false); // Close the modal
+		setIsModalOpen(false);
 	};
 
 	return (
@@ -61,9 +64,9 @@ const BookCard = ({ book, wishlist, addToWishlist, removeFromWishlist }) => {
 					<div>
 						{isInWishlist ? (
 							<button
-								onClick={() => handleRemoveClick(book?.id)} // Open modal before removing
+								onClick={() => handleRemoveClick(book?.id)}
 								type="button"
-								className="inline-block rounded bg-red-500 px-2 pb-2 pt-2.5 text-xs font-medium uppercase leading-normal text-white shadow-primary-3 transition duration-150 ease-in-out"
+								className="inline-block rounded bg-red-500 px-2 pb-2 pt-2.5 text-xs font-medium uppercase text-white transition duration-150 ease-in-out"
 								onMouseEnter={() => setTooltipVisible(true)}
 								onMouseLeave={() => setTooltipVisible(false)}
 							>
@@ -74,30 +77,26 @@ const BookCard = ({ book, wishlist, addToWishlist, removeFromWishlist }) => {
 							</button>
 						) : (
 							<button
-								onClick={() => addToWishlist(book?.id)} // Add to wishlist
+								onClick={() => addToWishlist(book?.id)}
 								type="button"
-								className="inline-block rounded bg-blue-700 px-2 pb-2 pt-2.5 text-xs font-medium uppercase leading-normal text-white shadow-primary-3 transition duration-150 ease-in-out"
+								className="inline-block rounded bg-blue-700 px-2 pb-2 pt-2.5 text-xs font-medium uppercase text-white transition duration-150 ease-in-out"
 								onMouseEnter={() => setTooltipVisible(true)}
 								onMouseLeave={() => setTooltipVisible(false)}
 							>
 								<img src="/assets/heart.svg" alt={'add to wishlist'} />
 							</button>
 						)}
-
-						{tooltipVisible && (
-							<div
-								id="tooltip"
-								role="tooltip"
-								className="absolute right-0 z-10 px-3 py-2 text-sm text-white bg-gray-700 rounded-lg shadow-sm transition-opacity duration-300"
-							>
-								{isInWishlist ? 'Remove from wishlist' : 'Add to wishlist'}
-							</div>
-						)}
 					</div>
 				</div>
 			</div>
+			<Link
+				to={`/book/${book?.id}`}
+				className="mx-6 mb-4 inline-block rounded bg-blue-700 px-2 pb-2 pt-2.5 text-xs font-medium uppercase leading-normal text-white shadow-primary-3 transition duration-150 ease-in-out"
+			>
+				Show Details
+			</Link>
 
-			{/* Modal for confirming wishlist removal */}
+			{/* Modal for confirm removal */}
 			<Modal open={isModalOpen} onClose={() => setIsModalOpen(false)}>
 				<h3 className="text-lg font-semibold">Confirm Removal</h3>
 				<p>Are you sure you want to remove this book from your wishlist?</p>
