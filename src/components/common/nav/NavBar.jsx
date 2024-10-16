@@ -1,5 +1,6 @@
 import { useEffect, useRef, useState } from 'react';
 import { NavLink } from 'react-router-dom';
+import MultiSelectDropdown from '../MultipleSelectDropdown';
 import NavItem from './NavItem';
 
 const navItem = [
@@ -7,7 +8,7 @@ const navItem = [
 	{ to: '/wishlist', title: 'Wishlist' },
 ];
 
-const NavBar = ({ handleSearch }) => {
+const NavBar = ({ handleSearch, handleCategory }) => {
 	const navRef = useRef(null);
 	const [isOpen, setIsOpen] = useState(false);
 
@@ -55,12 +56,15 @@ const NavBar = ({ handleSearch }) => {
 				<div
 					className={`w-full md:block md:w-auto ${isOpen ? 'block' : 'hidden'}`}
 				>
-					<ul className="font-medium flex flex-col p-4 md:p-0 mt-4 border border-gray-100 rounded-lg bg-gray-50 md:flex-row md:space-x-4 md:mt-0 md:border-0 md:bg-white ">
+					<ul className="font-medium flex flex-col items-center p-4 max-md:gap-3 md:p-0 mt-4 border border-gray-100 rounded-lg bg-gray-50 md:flex-row md:space-x-4 md:mt-0 md:border-0 md:bg-white ">
+						<div className="">
+							<MultiSelectDropdown handleCategory={handleCategory} />
+						</div>
 						<input
 							onChange={(e) => handleSearch(e)}
 							type="search"
 							placeholder="Search by title..."
-							className="border-2 pl-2 pr-1 py-1 rounded-md outline-none focus:border-1 focus:border-gray-600"
+							className="max-md:w-full border-2 pl-2 pr-1 py-1 rounded-md outline-none focus:border-1 focus:border-gray-600"
 						/>
 						{navItem.map((item, index) => (
 							<NavItem key={index} to={item.to} onClick={handleNavItemClick}>

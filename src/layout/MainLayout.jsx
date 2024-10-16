@@ -4,16 +4,22 @@ import { Footer, NavBar, ScrollTop } from '../components';
 
 const MainLayout = () => {
 	const [search, setSearch] = useState('');
+	const [categories, setCategories] = useState(null);
 
 	const handleSearch = (e) => {
 		setSearch(e.target.value);
 	};
 
+	const handleCategory = (data) => {
+		setCategories(data);
+		console.log({ data });
+	};
+
 	return (
 		<main>
-			<NavBar handleSearch={handleSearch} />
+			<NavBar handleSearch={handleSearch} handleCategory={handleCategory} />
 
-			<Outlet context={[search]} />
+			<Outlet context={[search, categories]} />
 
 			<ScrollTop />
 			<Footer />
@@ -21,7 +27,3 @@ const MainLayout = () => {
 	);
 };
 export default MainLayout;
-
-// const [count, setCount] = useOutletContext();
-// const [count, setCount] = React.useState(0);
-// return <Outlet context={[count, setCount]} />;

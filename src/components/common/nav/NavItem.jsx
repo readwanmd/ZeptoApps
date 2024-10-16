@@ -1,7 +1,7 @@
 import { NavLink } from 'react-router-dom';
 
 const NavItem = ({ to, children, onClick }) => (
-	<li>
+	<li className="max-md:w-full text-center">
 		<NavLink
 			to={to}
 			onClick={onClick}
