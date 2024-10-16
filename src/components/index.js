@@ -1,5 +1,5 @@
 import Footer from './common/Footer';
-import Navbar from './common/Navbar';
+import NavBar from './common/nav/NavBar';
 import ScrollTop from './common/ScrollTop';
 
-export { Footer, Navbar, ScrollTop };
+export { Footer, NavBar, ScrollTop };

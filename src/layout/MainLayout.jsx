@@ -1,10 +1,10 @@
 import { Outlet } from 'react-router-dom';
-import { Footer, Navbar, ScrollTop } from '../components';
+import { Footer, NavBar, ScrollTop } from '../components';
 
 const MainLayout = () => {
 	return (
 		<main>
-			<Navbar />
+			<NavBar />
 
 			<Outlet />
 
