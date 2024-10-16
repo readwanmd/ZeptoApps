@@ -1,18 +1,22 @@
 import axios from 'axios';
 import { useEffect, useReducer, useState } from 'react';
+import { useOutletContext } from 'react-router-dom';
 import { actions } from '../../actions';
 import { useWishlist } from '../../hooks/useWishlist';
 import { booksReducer, initialState } from '../../reducer/booksReducer';
 import BookCard from './BookCard';
 
 const Books = () => {
+	const [search] = useOutletContext();
 	const { wishlist, addToWishlist, removeFromWishlist } = useWishlist();
 	const [state, dispatch] = useReducer(booksReducer, initialState);
 	const [page, setPage] = useState(1); // Track the current page
 	const totalPages = state?.books?.count
 		? Math.ceil(state.books.count / state.books.results.length)
 		: 1;
+	const [displayBook, setDisplayBook] = useState([]);
 
+	// Fetch books based on the current page
 	useEffect(() => {
 		const getBooks = async () => {
 			// Check if the data for the current page is already in cache
@@ -47,7 +51,23 @@ const Books = () => {
 		};
 
 		getBooks();
-	}, [page]); // Add `state.cache` as a dependency to watch for cache changes
+	}, [page, state.cache]);
+
+	// Filter books based on the search query
+	useEffect(() => {
+		const filterBooks = (title) => {
+			if (title) {
+				const filteredBooks = state?.books?.results.filter((book) =>
+					book.title.toLowerCase().includes(title.toLowerCase())
+				);
+				setDisplayBook(filteredBooks);
+			} else {
+				setDisplayBook(state?.books?.results || []);
+			}
+		};
+
+		filterBooks(search);
+	}, [search, state?.books?.results]);
 
 	// Pagination controls
 	const handlePrevious = () => {
@@ -73,16 +93,25 @@ const Books = () => {
 	return (
 		<div className="container mx-auto">
 			<div className="flex flex-wrap justify-center gap-8 mt-8">
-				{state?.books?.results?.length > 0 &&
-					state.books.results.map((book) => (
-						<BookCard
-							key={book.id}
-							book={book}
-							isInWishlist={wishlist.some((item) => item.id === book.id)}
-							addToWishlist={() => addToWishlist(book)}
-							removeFromWishlist={() => removeFromWishlist(book.id)}
-						/>
-					))}
+				{displayBook.length > 0
+					? displayBook.map((book) => (
+							<BookCard
+								key={book.id}
+								book={book}
+								isInWishlist={wishlist.some((item) => item.id === book.id)}
+								addToWishlist={() => addToWishlist(book)}
+								removeFromWishlist={() => removeFromWishlist(book.id)}
+							/>
+					  ))
+					: state?.books?.results?.map((book) => (
+							<BookCard
+								key={book.id}
+								book={book}
+								isInWishlist={wishlist.some((item) => item.id === book.id)}
+								addToWishlist={() => addToWishlist(book)}
+								removeFromWishlist={() => removeFromWishlist(book.id)}
+							/>
+					  ))}
 			</div>
 
 			{/* Pagination */}

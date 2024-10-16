@@ -7,7 +7,7 @@ const navItem = [
 	{ to: '/wishlist', title: 'Wishlist' },
 ];
 
-const NavBar = () => {
+const NavBar = ({ handleSearch }) => {
 	const navRef = useRef(null);
 	const [isOpen, setIsOpen] = useState(false);
 
@@ -57,8 +57,9 @@ const NavBar = () => {
 				>
 					<ul className="font-medium flex flex-col p-4 md:p-0 mt-4 border border-gray-100 rounded-lg bg-gray-50 md:flex-row md:space-x-4 md:mt-0 md:border-0 md:bg-white ">
 						<input
+							onChange={(e) => handleSearch(e)}
 							type="search"
-							placeholder="search..."
+							placeholder="Search by title..."
 							className="border-2 pl-2 pr-1 py-1 rounded-md outline-none focus:border-1 focus:border-gray-600"
 						/>
 						{navItem.map((item, index) => (
