@@ -1,5 +1,5 @@
 import axios from 'axios';
-import { useEffect, useReducer, useState } from 'react';
+import { useEffect, useMemo, useReducer, useState } from 'react';
 import { useOutletContext } from 'react-router-dom';
 import { actions } from '../../actions';
 import { useWishlist } from '../../hooks/useWishlist';
@@ -11,23 +11,13 @@ const Books = () => {
 	const { wishlist, addToWishlist, removeFromWishlist } = useWishlist();
 	const [state, dispatch] = useReducer(booksReducer, initialState);
 	const [page, setPage] = useState(1);
-	const totalPages = state?.books?.count
-		? Math.ceil(state.books.count / state.books.results.length)
-		: 1;
 
-	// Fetch books based on the current page, search, and categories
 	useEffect(() => {
 		const getBooks = async () => {
 			dispatch({ type: actions.books.DATA_FETCHING });
 			try {
 				let url = `https://gutendex.com/books/?page=${page}`;
 
-				// Add search query if present
-				if (search) {
-					url += `&search=${encodeURIComponent(search)}`;
-				}
-
-				// Add categories as topics if present
 				if (categories && categories.length > 0) {
 					categories.forEach((category) => {
 						url += `&topic=${encodeURIComponent(category)}`;
@@ -52,17 +42,35 @@ const Books = () => {
 		};
 
 		getBooks();
-	}, [page, search, categories]);
+	}, [page, categories]);
 
-	// Pagination controls
+	// Filter books on search term
+	const filteredBooks = useMemo(() => {
+		if (!search) return state?.books?.results || [];
+
+		return (state?.books?.results || []).filter(
+			(book) =>
+				book.title.toLowerCase().includes(search.toLowerCase()) ||
+				book.authors.some((author) =>
+					author.name.toLowerCase().includes(search.toLowerCase())
+				)
+		);
+	}, [state?.books?.results, search]);
+
+	const totalPages = useMemo(() => {
+		const totalItems = search ? filteredBooks.length : state?.books?.count || 0;
+		const itemsPerPage = state?.books?.results?.length || 1;
+		return Math.ceil(totalItems / itemsPerPage);
+	}, [state?.books, filteredBooks, search]);
+
 	const handlePrevious = () => {
-		if (state?.books?.previous !== null && page > 1) {
+		if (page > 1) {
 			setPage((prevPage) => prevPage - 1);
 		}
 	};
 
 	const handleNext = () => {
-		if (state.books && state.books.next !== null && page < totalPages) {
+		if (page < totalPages) {
 			setPage((prevPage) => prevPage + 1);
 		}
 	};
@@ -78,45 +86,47 @@ const Books = () => {
 	return (
 		<div className="container mx-auto">
 			<div className="flex flex-wrap justify-center gap-8 mt-8">
-				{state?.books?.results?.map((book) => (
-					<BookCard
-						key={book.id}
-						book={book}
-						isInWishlist={wishlist.some((item) => item.id === book.id)}
-						addToWishlist={() => addToWishlist(book)}
-						removeFromWishlist={() => removeFromWishlist(book.id)}
-					/>
-				))}
+				{filteredBooks.length > 0 ? (
+					filteredBooks.map((book) => (
+						<BookCard
+							key={book.id}
+							book={book}
+							isInWishlist={wishlist.some((item) => item.id === book.id)}
+							addToWishlist={() => addToWishlist(book)}
+							removeFromWishlist={() => removeFromWishlist(book.id)}
+						/>
+					))
+				) : (
+					<div className="text-center mt-8 text-xl">No books found</div>
+				)}
 			</div>
 
 			{/* Pagination */}
-			<div className="flex justify-center mt-8 space-x-4">
-				<button
-					onClick={handlePrevious}
-					disabled={state?.books?.previous === null}
-					className={`px-4 py-2 rounded bg-blue-600 text-white ${
-						state?.books?.previous === null
-							? 'opacity-50 cursor-not-allowed'
-							: ''
-					}`}
-				>
-					Previous
-				</button>
-				<span className="px-4 py-2 text-gray-700">
-					Page {page} of {totalPages}
-				</span>
-				<button
-					onClick={handleNext}
-					disabled={state?.books?.next === null || page >= totalPages}
-					className={`px-4 py-2 rounded bg-blue-600 text-white ${
-						state?.books?.next === null || page >= totalPages
-							? 'opacity-50 cursor-not-allowed'
-							: ''
-					}`}
-				>
-					Next
-				</button>
-			</div>
+			{filteredBooks.length > 0 && (
+				<div className="flex justify-center mt-8 space-x-4">
+					<button
+						onClick={handlePrevious}
+						disabled={page === 1}
+						className={`px-4 py-2 rounded bg-blue-600 text-white ${
+							page === 1 ? 'opacity-50 cursor-not-allowed' : ''
+						}`}
+					>
+						Previous
+					</button>
+					<span className="px-4 py-2 text-gray-700">
+						Page {page} of {totalPages}
+					</span>
+					<button
+						onClick={handleNext}
+						disabled={page >= totalPages}
+						className={`px-4 py-2 rounded bg-blue-600 text-white ${
+							page >= totalPages ? 'opacity-50 cursor-not-allowed' : ''
+						}`}
+					>
+						Next
+					</button>
+				</div>
+			)}
 		</div>
 	);
 };

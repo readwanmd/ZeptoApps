@@ -15,7 +15,6 @@ const booksReducer = (state, action) => {
 				loading: true,
 			};
 		}
-
 		case actions.books.DATA_FETCHED: {
 			return {
 				...state,
@@ -23,11 +22,10 @@ const booksReducer = (state, action) => {
 				books: action.data,
 				cache: {
 					...state.cache,
-					[action.page]: action.data,
+					[action.cacheKey]: action.data,
 				},
 			};
 		}
-
 		case actions.books.DATA_FETCH_ERROR: {
 			return {
 				...state,
@@ -35,7 +33,6 @@ const booksReducer = (state, action) => {
 				error: action.error,
 			};
 		}
-
 		default: {
 			return state;
 		}
