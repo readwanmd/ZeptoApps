@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { Outlet } from 'react-router-dom';
-import { Footer, NavBar, ScrollTop } from '../components';
+import { NavBar, ScrollTop } from '../components';
 
 const MainLayout = () => {
 	const [search, setSearch] = useState('');
@@ -22,7 +22,7 @@ const MainLayout = () => {
 			<Outlet context={[search, categories]} />
 
 			<ScrollTop />
-			<Footer />
+			{/* <Footer /> */}
 		</main>
 	);
 };

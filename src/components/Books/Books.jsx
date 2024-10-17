@@ -94,7 +94,7 @@ const Books = () => {
 				<button
 					onClick={handlePrevious}
 					disabled={state?.books?.previous === null}
-					className={`px-4 py-2 rounded bg-blue-500 text-white ${
+					className={`px-4 py-2 rounded bg-blue-600 text-white ${
 						state?.books?.previous === null
 							? 'opacity-50 cursor-not-allowed'
 							: ''
@@ -108,7 +108,7 @@ const Books = () => {
 				<button
 					onClick={handleNext}
 					disabled={state?.books?.next === null || page >= totalPages}
-					className={`px-4 py-2 rounded bg-blue-500 text-white ${
+					className={`px-4 py-2 rounded bg-blue-600 text-white ${
 						state?.books?.next === null || page >= totalPages
 							? 'opacity-50 cursor-not-allowed'
 							: ''

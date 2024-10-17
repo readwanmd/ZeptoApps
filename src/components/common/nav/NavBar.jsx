@@ -1,5 +1,5 @@
 import { useEffect, useRef, useState } from 'react';
-import { NavLink } from 'react-router-dom';
+import { NavLink, useLocation } from 'react-router-dom';
 import MultiSelectDropdown from '../MultipleSelectDropdown';
 import NavItem from './NavItem';
 
@@ -9,6 +9,9 @@ const navItem = [
 ];
 
 const NavBar = ({ handleSearch, handleCategory }) => {
+	let location = useLocation();
+	console.log('pathname: ', location.pathname === '/wishlist');
+
 	const navRef = useRef(null);
 	const [isOpen, setIsOpen] = useState(false);
 
@@ -57,9 +60,11 @@ const NavBar = ({ handleSearch, handleCategory }) => {
 					className={`w-full md:block md:w-auto ${isOpen ? 'block' : 'hidden'}`}
 				>
 					<ul className="font-medium flex flex-col items-center p-4 max-md:gap-3 md:p-0 mt-4 border border-gray-100 rounded-lg bg-gray-50 md:flex-row md:space-x-4 md:mt-0 md:border-0 md:bg-white ">
-						<div className="">
-							<MultiSelectDropdown handleCategory={handleCategory} />
-						</div>
+						{location.pathname === '/wishlist' || (
+							<div className="">
+								<MultiSelectDropdown handleCategory={handleCategory} />
+							</div>
+						)}
 						<input
 							onChange={(e) => handleSearch(e)}
 							type="search"
