@@ -10,7 +10,6 @@ const navItem = [
 
 const NavBar = ({ handleSearch, handleCategory }) => {
 	let location = useLocation();
-	console.log('pathname: ', location.pathname === '/wishlist');
 
 	const navRef = useRef(null);
 	const [isOpen, setIsOpen] = useState(false);

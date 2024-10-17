@@ -1,9 +1,9 @@
 import { useState } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useOutletContext } from 'react-router-dom';
 import Modal from '../common/Modal';
 
 const BookCard = ({
-	book, // full book object passed here
+	book,
 	isInWishlist,
 	addToWishlist,
 	removeFromWishlist,
@@ -11,6 +11,7 @@ const BookCard = ({
 	const [tooltipVisible, setTooltipVisible] = useState(false);
 	const [isModalOpen, setIsModalOpen] = useState(false);
 	const [selectedBookId, setSelectedBookId] = useState(null);
+	const [, , , setBook] = useOutletContext();
 
 	const handleRemoveClick = (id) => {
 		setSelectedBookId(id);
@@ -90,10 +91,11 @@ const BookCard = ({
 				</div>
 			</div>
 			<Link
+				onClick={() => setBook(book)}
 				to={`/book/${book?.id}`}
 				className="mx-6 mb-4 inline-block rounded bg-blue-700 px-2 pb-2 pt-2.5 text-xs font-medium uppercase leading-normal text-white shadow-primary-3 transition duration-150 ease-in-out"
 			>
-				Show Details
+				See Details
 			</Link>
 
 			{/* Modal for confirm removal */}

@@ -5,6 +5,7 @@ import { NavBar, ScrollTop } from '../components';
 const MainLayout = () => {
 	const [search, setSearch] = useState('');
 	const [categories, setCategories] = useState(null);
+	const [book, setBook] = useState(null);
 
 	const handleSearch = (e) => {
 		setSearch(e.target.value);
@@ -12,14 +13,13 @@ const MainLayout = () => {
 
 	const handleCategory = (data) => {
 		setCategories(data);
-		console.log({ data });
 	};
 
 	return (
 		<main>
 			<NavBar handleSearch={handleSearch} handleCategory={handleCategory} />
 
-			<Outlet context={[search, categories]} />
+			<Outlet context={[search, categories, book, setBook]} />
 
 			<ScrollTop />
 			{/* <Footer /> */}

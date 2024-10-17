@@ -1,7 +1,5 @@
-import axios from 'axios';
-import { useEffect, useReducer, useState } from 'react';
-import { useParams } from 'react-router-dom';
-import { actions } from '../actions';
+import { useReducer, useState } from 'react';
+import { useOutletContext, useParams } from 'react-router-dom';
 
 import Modal from '../components/common/Modal';
 import { useWishlist } from '../hooks/useWishlist';
@@ -14,58 +12,55 @@ const BookPage = () => {
 	const isInWishlist = wishlist.includes(Number(id));
 	const [isModalOpen, setIsModalOpen] = useState(false);
 	const [selectedBookId, setSelectedBookId] = useState(null);
-	console.log({ wishlist });
+	const [, , book] = useOutletContext();
+	console.log({ book });
 
-	useEffect(() => {
-		const getBook = async () => {
-			dispatch({ type: actions.book.DATA_FETCHING });
-			try {
-				const res = await axios.get(`https://gutendex.com/books/${id}`);
-				if (res.status === 200) {
-					dispatch({
-						type: actions.book.DATA_FETCHED,
-						data: res.data,
-					});
-				}
-			} catch (error) {
-				console.error(error);
-				dispatch({ type: actions.book.DATA_FETCH_ERROR, error: error.message });
-			}
-		};
+	// useEffect(() => {
+	// 	const getBook = async () => {
+	// 		dispatch({ type: actions.book.DATA_FETCHING });
+	// 		try {
+	// 			const res = await axios.get(`https://gutendex.com/books/${id}`);
+	// 			if (res.status === 200) {
+	// 				dispatch({
+	// 					type: actions.book.DATA_FETCHED,
+	// 					data: res.data,
+	// 				});
+	// 			}
+	// 		} catch (error) {
+	// 			console.error(error);
+	// 			dispatch({ type: actions.book.DATA_FETCH_ERROR, error: error.message });
+	// 		}
+	// 	};
 
-		getBook();
-	}, [id]);
+	// 	getBook();
+	// }, [id]);
 
-	if (state.loading) {
-		return (
-			<div className="container my-8 flex justify-center">
-				<p className="text-xl font-semibold">Loading book details...</p>
-			</div>
-		);
-	}
+	// if (state.loading) {
+	// 	return (
+	// 		<div className="container my-8 flex justify-center">
+	// 			<p className="text-xl font-semibold">Loading book details...</p>
+	// 		</div>
+	// 	);
+	// }
 
-	if (state.error) {
-		return (
-			<div className="container my-8 flex justify-center">
-				<p className="text-red-600 text-xl font-semibold">
-					Error: {state.error} - Failed to load book data.
-				</p>
-			</div>
-		);
-	}
+	// if (state.error) {
+	// 	return (
+	// 		<div className="container my-8 flex justify-center">
+	// 			<p className="text-red-600 text-xl font-semibold">
+	// 				Error: {state.error} - Failed to load book data.
+	// 			</p>
+	// 		</div>
+	// 	);
+	// }
 
-	const { id: bookId, title, authors, subjects, formats } = state.book;
-	console.log({ isInWishlist });
+	const { id: bookId, title, authors, subjects, formats } = book;
 
 	const handleRemoveClick = (id) => {
 		setSelectedBookId(Number(id));
 		setIsModalOpen(true);
-		console.log('Selected Book for removal:', id);
 	};
 
 	const confirmRemove = () => {
-		console.log({ selectedBookId });
-
 		removeFromWishlist(selectedBookId);
 		setIsModalOpen(false);
 	};
