@@ -1,73 +1,96 @@
-Breakdown of task, step-by-step checklist:
+# Book Gallery
 
-### 1. **Setup the Project Environment**
+This project is a frontend web application that displays a list of books fetched from the [Gutendex API](https://gutendex.com/books). It allows users to search, filter, and paginate through the book list and manage a wishlist.
 
-- [x] Create a new React project.
-- [x] Install necessary packages (`react-router-dom`, `axios`).
-- [ ] Set up `react-router-dom` for navigation.
-- [ ] Set up folder structure for components, pages, and CSS.
+## Features
 
-### 2. **API Integration**
+- **Book List**: Displays the title, author, cover image, genre, and ID of each book.
+- **Search**: Real-time filtering of books based on the title.
+- **Genre Filter**: A dropdown filter to show books by genre/topic.
+- **Pagination**: Paginate the book list with next/previous and numbered page controls.
+- **Wishlist**: Add/remove books to/from a wishlist. The wishlist is stored in localStorage and persists across page reloads.
+- **Responsive Design**: Fully responsive layout that works well on both desktop and mobile devices.
 
-- [ ] Fetch the list of books using `axios` from the API: `https://gutendex.com/books`.
-- [ ] Log the response in the console to verify the data structure.
+## Pages
 
-### 3. **Homepage Layout**
+- **Homepage [/]**: Displays the paginated list of books with search and filter functionality.
+- **Wishlist [/wishlist]**: Shows books added to the wishlist.
+- **Book Detail Page [/book/:id]**: Displays detailed information about a selected book.
 
-- [ ] Create a **Navbar** component with links to Home, Wishlist, and Book Detail pages.
-- [ ] Design a **BookCard** component to display:
-  - Book cover image.
-  - Title.
-  - Author name.
-  - Genre.
-  - ID.
-- [ ] Map through the API data and display a list of books using the **BookCard** component.
+## Technologies Used
 
-### 4. **Search Functionality**
+- HTML
+- Tailwind CSS
+- React Router Dom
+- Gutendex Api
 
-- [ ] Implement a **SearchBar** component.
-- [ ] Add functionality to filter books by title in real-time as the user types.
+## Functionalities
 
-### 5. **Filter by Genre**
+### 1. Search
 
-- [ ] Implement a **DropdownFilter** component.
-- [ ] Add functionality to filter books by genre/topic using the dropdown.
-- [ ] Combine the search and genre filter so both can be used together.
+Real-time filtering was implemented using React Router's context, as it was already applied in the project, making it easier to manage state across components.  
+**Challenge**:  
+Deciding between state management methods like `useReducer`, `useContext`, or libraries like Redux. Eventually, I chose to use React Router's context for simplicity, as it already implemented.
 
-### 6. **Wishlist Functionality**
+### 2. Genre/Topic Filter
 
-- [ ] Add a **Heart Icon** to each book card for wishlisting.
-- [ ] Save wishlisted books to `localStorage`.
-- [ ] Toggle the heart icon to add/remove books from the wishlist.
-- [ ] Create a **Wishlist Page** that displays only the wishlisted books.
+The selected genre is passed as a query parameter to the API to fetch filtered results. The API supports filtering via query parameters, which simplifies the process.  
+**Challenge**:  
+Accurate filtering was ensured by making API calls each time the selected genre changed.
 
-### 7. **Pagination**
+### 3. Pagination
 
-- [ ] Implement pagination to display a limited number of books per page.
-- [ ] Add "Next" and "Previous" buttons to navigate between pages.
-- [ ] Display page numbers (e.g., 1, 2, 3...).
+Pagination was handled on the server-side, as the API provided paginated results.
 
-### 8. **Book Detail Page**
+### 4. Wishlist using LocalStorage
 
-- [ ] Create a **BookDetail** component.
-- [ ] Fetch and display the details of a book when a user clicks on it (using the book's ID from the API).
-- [ ] Ensure the book detail page includes the title, author, genre, and description.
+Initially, I stored only the wishlist IDs and made API calls to retrieve the book data. However, to reduce API calls, I switched to storing the entire book data in localStorage. Optimizing localStorage usage to store book details instead of making redundant API requests.
 
-### 9. **Responsiveness**
+### 6. Responsiveness
 
-- [ ] Ensure the layout is fully responsive.
-- [ ] Test the design on both mobile and desktop views.
+Tailwind CSS was used to create a responsive design efficiently.  
+I considered using vanilla CSS to avoid additional dependencies, but Tailwind's flexibility made it a better choice for rapid development and responsiveness.
 
-### 10. **Styling (Plain CSS)**
+## How to Run
 
-- [ ] Use plain CSS for styling.
-- [ ] Ensure the design is clean, user-friendly, and aesthetically pleasing.
+1. Clone the repository:
 
-### 11. **LocalStorage for Search/Filter Preferences (Bonus)**
+   ```bash
+   git clone https://github.com/readwanmd/Book-Gallery.git
+   ```
 
-- [ ] Save the user’s search query and genre filter to `localStorage`.
-- [ ] Persist the search and filter options when the page is refreshed.
+2. Navigate to the project directory:
 
-### 12. **Optional Bonus (Animations)**
+   ```bash
+   cd Book-Gallery
+   ```
 
-- [ ] Implement smooth animations for showing/hiding the books during search and filter actions.
+3. Install dependencies:
+
+   ```bash
+   npm i
+   #or
+   yarn
+   ```
+
+4. Run in local machine:
+
+   ```bash
+   npm run dev
+   #or
+   yarn dev
+   ```
+
+## Screenshots
+
+![Home Page](public/home.png)
+
+<p align="center"><i>Home Page</i></p>
+
+![Book Page](./public/books_page.png)
+
+<p align="center"><i>Book Page</i></p>
+
+![Wishlist Page](./public/wishlist.png)
+
+<p align="center"><i>Wishlist Page</i></p>
