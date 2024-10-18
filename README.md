@@ -1,4 +1,4 @@
-# Book Gallery
+# ZeptoApps Book Gallery
 
 This project is a frontend web application that displays a list of books fetched from the [Gutendex API](https://gutendex.com/books). It allows users to search, filter, and paginate through the book list and manage a wishlist.
 
@@ -56,13 +56,13 @@ I considered using vanilla CSS to avoid additional dependencies, but Tailwind's 
 1. Clone the repository:
 
    ```bash
-   git clone https://github.com/readwanmd/Book-Gallery.git
+   git clone https://github.com/readwanmd/ZeptoApps-Book-Gallery.git
    ```
 
 2. Navigate to the project directory:
 
    ```bash
-   cd Book-Gallery
+   cd ZeptoApps-Book-Gallery
    ```
 
 3. Install dependencies:
